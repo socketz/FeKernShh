@@ -3,11 +3,11 @@
 Usage: FeKernShh.exe <hunt|kill>
 ```
 
-FeKern's driver it is always loaded at altitude 385600. The objective of this tool is to challenge the assumption that FireEye Activity Monitor are always collecting events. FeKernShh locates and unloads the driver using this strategy:
+FeKern's driver it is always loaded at altitude 388360. The objective of this tool is to challenge the assumption that FireEye Activity Monitor are always collecting events. FeKernShh locates and unloads the driver using this strategy:
 
 **1.** Uses `fltlib!FilterFindFirst` and `fltlib!FilterFindNext` to enumerate drivers on the system in place of crawling the registry.  
-**2a.** If a driver is found at altitude 385600, it uses `kernel32!OpenProcessToken` and `advapi32!AdjustTokenPrivileges` to grant itself `SeLoadDriverPrivilege`.  
-**2b.** If a driver was not found at 385600, it walks `HKLM\SYSTEM\CurrentControlSet\Services` looking for a "FeKern Instance" subkey and if found, assigns the required permission as desrcibed above.  
+**2a.** If a driver is found at altitude 388360, it uses `kernel32!OpenProcessToken` and `advapi32!AdjustTokenPrivileges` to grant itself `SeLoadDriverPrivilege`.
+**2b.** If a driver was not found at 388360, it walks `HKLM\SYSTEM\CurrentControlSet\Services` looking for a "FeKern Instance" subkey and if found, assigns the required permission as desrcibed above.
 **3.** If it was able get the required privilege, it calls `fltlib!FilterUnload` to unload the driver.  
 
 ## Credits

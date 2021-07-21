@@ -1,0 +1,71 @@
+[Version]
+Signature = "$Windows NT$"
+Class = ActivityMonitor
+ClassGUID = "{B86DFF51-A31E-4BAC-B3CF-E8CFE75C9FC2}"
+DriverVer = 08/18/2020,32.13.0.0
+CatalogFile = fekern.cat
+Provider=%Provider%
+
+[DestinationDirs]
+CopyFeKernDriver = 12 ; drivers directory
+
+[defaultinstall]
+CopyFiles = CopyFeKernDriver
+
+[defaultinstall.ntamd64]
+CopyFiles = CopyFeKernDriver
+
+[defaultinstall.Services]
+AddService = %ServiceName%,0x400,FeKern.Service
+
+[defaultinstall.ntamd64.Services]
+AddService = %ServiceName%,0x400,FeKern.Service
+
+[defaultuninstall]
+DelFiles = CopyFeKernDriver
+
+[defaultuninstall.ntamd64]
+DelFiles = CopyFeKernDriver
+
+[defaultuninstall.Services]
+DelService = %ServiceName%,0x200
+
+[defaultuninstall.ntamd64.Services]
+DelService = %ServiceName%,0x200
+
+[FeKern.Service]
+DisplayName = %ServiceName%
+ServiceBinary = %12%\%DriverName%.sys
+Dependencies = "FltMgr"
+ServiceType = 2
+StartType = 3
+ErrorControl = 1
+Tag = 2
+LoadOrderGroup = "FSFilter Activity Monitor"
+AddReg = FeKern.AddRegistry
+Security="D:(A;;GA;;;SY)(A;;CCLCSWRPLOCRRC;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)"
+
+[FeKern.AddRegistry]
+HKR,"Instances","DefaultInstance",0x00000000,%DefaultInstance%
+HKR,"Instances\"%Instance.Name%,"Altitude",0x00000000,%Instance.Altitude%
+HKR,"Instances\"%Instance.Name%,"Flags",0x00010001,%Instance.Flags%
+
+[CopyFeKernDriver]
+%DriverName%.sys,fekern.sys,,0x00004000 ; COPYFLG_REPLACE_BOOT_FILE
+
+[SourceDisksNames]
+99 = "FireEye Agent Installation Disk",,,""
+
+[SourceDisksFiles]
+fekern.sys = 99
+
+[Strings]
+DefaultInstance = "FeKern"
+DriverName = "FeKern"
+Provider = "FireEye, Inc."
+ManufacturerName = "FireEye, Inc"
+ServiceName = "FeKern"
+ServiceDescription = ""
+Instance.Name = "FeKern"
+Instance.Altitude = "388360"
+Instance.Flags = 0
